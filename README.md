@@ -52,9 +52,7 @@ sequenceDiagram
 
     该**login函数**:
 
-    ​	首先调用 `wx.login()`, 获取到`code`字段, 将code字段向服务器发送一个**GET-Request**
-
-    [^1]: api/login
+    ​	首先调用 `wx.login()`, 获取到`code`字段, 将code字段向服务器发送一个**GET-Request**[/api/login](####login)
 
     ​	errcode -> 0:	告知用户登录成功, 将取得的`token`存入本地storage, 以待后续业务请求, 跳转到主界面
 
@@ -64,10 +62,11 @@ sequenceDiagram
 
     在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html), 将数据处理为上述接口所需数据形式返回。`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为7day。
 
-    同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库[USER表](####5.1 USER表)
+    同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库[USER表](#### 5.1 USER表)
 
 ## 4.API接口说明
 
+#### login
 [/api/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)[^1]
 
 ## 5.数据库说明
