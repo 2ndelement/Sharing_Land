@@ -55,7 +55,7 @@ sequenceDiagram
 
     ​	该**login函数**:
 
-    ​		首先调用 `wx.login()`, 获取到`code`字段, 将code字段向服务器发送一个**GET-Request**[/api/login](#4.1 login)
+    ​		首先调用 `wx.login()`, 获取到`code`字段, 将code字段向服务器发送一个**GET-Request** [/api/login](#41-login)
   
     ​	返回体中:
   
@@ -68,7 +68,7 @@ sequenceDiagram
   
     ​	其中`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为7day。
   
-    ​	同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库[USER表](#5.1 USER表)。
+    ​	同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库 [USER表](#51-user表)。
 
 ## 4.API接口说明
 
