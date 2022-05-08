@@ -62,7 +62,7 @@ sequenceDiagram
 
     在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html), 将数据处理为上述接口所需数据形式返回。`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为7day。
 
-    同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库[USER表](#### 5.1 USER表)
+    同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在, 否则添加进数据库[USER表](####5.1 USER表)
 
 ## 4.API接口说明
 
