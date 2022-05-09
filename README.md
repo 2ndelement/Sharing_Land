@@ -53,12 +53,14 @@ sequenceDiagram
 
   该**login函数**:
 
-  首先调用 `wx.login()`, 获取到`code`字段, 将`code`
+  首先调用 [wx.login()](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html?msclkid=47d4cda8cf7811ec8613b4d8a85d250b), 获取到`code`字段, 将`code`
   字段通过 [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)请求发送到服务器  **服务器的host应存储为一个全局变量以便修改**
 
    返回体中:
 
-   errcode -> 0:    告知用户登录成功, 将取得的**`token`**存入本地wx storage, 以待后续业务请求。然后跳转到主界面
+   errcode -> 0:    告知用户登录成功, 将取得的**`token`**存入本地storage, 以待后续业务请求。然后跳转到主界面
+
+  > 附:	[wx.setStorage(Object object) | 微信开放文档 (qq.com)](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorage.html)
 
    errcode -> !0:   告知用户登录错误, 显示错误原因
 
@@ -68,16 +70,15 @@ sequenceDiagram
 
 - **服务器**:
 
-  在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html)
-  , 将数据处理为上述接口所需数据形式返回。
-  
- 返回的数据中`errcode`, `errmsg`继承微信后台获取到的数据, **`token`**由jwt工具生成, 有效时间暂定为 7 day。
-  
- 同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
-  
- 存在:    更新`nickname`,`avatarurl`
-  
- 不存在:新插入一行用户数据
+  在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html), 将数据处理为上述接口所需数据形式返回。
+
+  返回的数据中`errcode`, `errmsg`继承微信后台获取到的数据, **`token`**由jwt工具生成, 有效时间暂定为 7 day。
+
+  同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
+
+​		 存在:    更新`nickname`,`avatarurl`
+
+​		 不存在:新插入一行用户数据
 
 
 
