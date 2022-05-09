@@ -174,7 +174,7 @@ CREATE TABLE User
     uid        INT AUTO_INCREMENT PRIMARY KEY COMMENT '序号',
     openid     VARCHAR(128) NOT NULL UNIQUE COMMENT '小程序开放ID',
     nickname   VARCHAR(128) COMMENT '微信昵称',
-    avatar_url VARCHAR(128) COMMENT '微信头像链接'
+    avatar_url VARCHAR(512) COMMENT '微信头像链接'
 );
 ```
 
@@ -188,8 +188,8 @@ CREATE TABLE User
 create table Land
 (
     lno         int auto_increment primary key comment '序号',
-    description varchar(255) not null comment '描述',
-    image_urls  varchar(255) comment '描述图标链接 以;作为分割符',
+    description varchar(1024) not null comment '描述',
+    image_urls  varchar(1024) comment '描述图标链接 以;作为分割符',
     uid         int comment '发布的用户序号',
     position    varchar(64)  not null comment '经纬度 例子 127.2131231;67.1312332',
     create_time datetime     not null comment '创建时间',

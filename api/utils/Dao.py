@@ -34,5 +34,5 @@ class Dao:
                 cur.execute(sql_insert_new_user)
             cls._db.commit()
         except Exception as e:
-            logging.error('数据库操作失败\n' + e)
-            exit(-1)
+            logging.error(e)
+            raise e
