@@ -1,5 +1,5 @@
 import jwt
-import Const
+from .Const import Const
 from datetime import datetime
 
 

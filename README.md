@@ -49,34 +49,36 @@ sequenceDiagram
 
 - **小程序**:
 
-  ​ 在用户进入小程序时, 可展现一个登录界面, 点击登录按钮调用 **login函数**,
+   在用户进入小程序时, 可展现一个登录界面, 点击登录按钮调用 **login函数**,
 
-  ​ 该**login函数**:
+   该**login函数**:
 
-  ​ 首先调用 `wx.login()`, 获取到`code`字段, 将`code`
-  字段通过 [/api/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768))请求发送到服务器
+   首先调用 `wx.login()`, 获取到`code`字段, 将`code`
+  字段通过 [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768))请求发送到服务器
 
-  ​ 返回体中:
+   返回体中:
 
-  ​ errcode -> 0:    告知用户登录成功, 将取得的`token`存入本地storage, 以待后续业务请求, 跳转到主界面
+   errcode -> 0:    告知用户登录成功, 将取得的`token`存入本地storage, 以待后续业务请求, 跳转到主界面
 
-  ​ errcode -> !0:   告知用户登录错误, 显示错误原因
+   errcode -> !0:   告知用户登录错误, 显示错误原因
 
 - **服务器**:
 
-  ​
+  
   在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html)
   , 将数据处理为上述接口所需数据形式返回。
 
-  ​ 其中`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为 7 day。
+   其中`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为 7 day。
 
-  ​ 同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
+   同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
 
-  ​ 存在:    更新`nickname`,`avatarurl`
+   存在:    更新`nickname`,`avatarurl`
 
-  ​ 不存在:新插入一行用户数据
+   不存在:新插入一行用户数据
 
 ***!!!记住此后的请求都要在请求头中加Token鉴权!!! 字段就命名为 'Token'***
+
+
 
 #### 3.2 闲置土地信息管理
 
@@ -133,19 +135,27 @@ sequenceDiagram
 
   点击提交按钮后
 
-  ​ 首先
+   首先
   将图片通过 [/api/upload/image](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)上传到服务器
 
-  ​ 然后 将其他信息通过 [/api/post/land]() 上传到服务器
+   然后 将其他信息通过 [/api/post/land]() 上传到服务器
 
 
 - **服务器**:
 
+
+
+
+
 ## 4.API汇总
 
-​    [/api/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)
+​    [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)
 
 ​    [/api/upload/image](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)
+
+
+
+
 
 ## 5.数据库说明
 
