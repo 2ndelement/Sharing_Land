@@ -47,3 +47,5 @@ class JwtFactory:
         """
         payload = dict(openid=openid, exp=datetime.now() + Const.jwt_exp)
         return cls.generate_token(payload)
+
+

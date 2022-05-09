@@ -141,7 +141,7 @@ sequenceDiagram
   
    然后 将其他信息通过 [/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768) 上传到服务器
   
-  **!注意! 你需要把多个url处理为`url1;url2;url3`的字符串形式 ,把地理位置处理成`lng;lat`的形式**
+  **!注意! 你需要把多个url处理为[url1,url2,url3]列表形式,把地理位置处理成[lng-float,lat-float]的形式**
   
   
 

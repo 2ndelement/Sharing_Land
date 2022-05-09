@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime
+
 import pymysql
 from .Const import Const
 
@@ -26,17 +28,17 @@ class Dao:
         """
         try:
             cur = cls._cursor
-            sql_is_exist_openid = f'''select 1 from User
-                      where openid = '{openid}'
-                      limit 1
-            '''
-            sql_insert_new_user = f'''insert into User (openid, avatar_url, nickname)
-                       values ('{openid}', '{avatar_url}','{nickname}')
-            '''
-            sql_update_user_info = f'''update User 
-                       set avatar_url = '{avatar_url}',nickname = '{nickname}'
-                       where openid = '{openid}'
-            '''
+            sql_is_exist_openid = f"select 1 " \
+                                  f"from User " \
+                                  f"where openid = '{openid}'" \
+                                  f"limit 1"
+
+            sql_insert_new_user = f"insert into User (openid, avatar_url, nickname)" \
+                                  f"values ('{openid}', '{avatar_url}','{nickname}')"
+
+            sql_update_user_info = f"update User " \
+                                   f"set avatar_url = '{avatar_url}',nickname = '{nickname}'" \
+                                   f"where openid = '{openid}'"
 
             cur.execute(sql_is_exist_openid)
 
@@ -47,6 +49,27 @@ class Dao:
 
             cls._db.commit()
 
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+    @classmethod
+    def user_post_land(cls, openid: str, description: str, position: str, image_urls: str, ):
+        try:
+            cur = cls._cursor
+            create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            if image_urls:
+                image_urls = f"'{image_urls}'"
+            else:
+                image_urls = 'null'
+            cur.execute(f"select uid "
+                        f"from User "
+                        f"where openid = '{openid}'")
+            uid = cur.fetchone()[0]
+            cur.execute(
+                f"insert into Land(description, image_urls, uid, position, create_time) "
+                f"values ('{description}',{image_urls},'{uid}','{position}','{create_time}')")
+            cls._db.commit()
         except Exception as e:
             logging.error(e)
             raise e

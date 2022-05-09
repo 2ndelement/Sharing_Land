@@ -6,17 +6,17 @@ import re
 from datetime import datetime
 
 from fastapi import APIRouter, UploadFile, File, Depends, Path, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
 
 from api.depends import token_is_valid
 from api.utils import Const
 
-upload_route = APIRouter(
+upload_router = APIRouter(
     prefix='/api/image'
 )
 
 
-@upload_route.post('/upload')
+@upload_router.post('/upload')
 async def image_upload(file: UploadFile = File(...), openid: str = Depends(token_is_valid)):
     """
     上传图片
@@ -42,7 +42,7 @@ async def image_upload(file: UploadFile = File(...), openid: str = Depends(token
             return {'errcode': 400, 'errmsg': '未知错误'}
 
 
-@upload_route.get('/download/{image_name}')
+@upload_router.get('/download/{image_name}')
 async def image_download(image_name: str = Path(...)):
     """
     下载图片
@@ -51,9 +51,7 @@ async def image_download(image_name: str = Path(...)):
     """
     try:
         image_path = os.path.join(Const.image_save_dir, image_name)
-        image = open(image_path, mode='rb')
-        response = StreamingResponse(image, media_type='image/' + image_name.split('.')[-1])
-        return response
+        return FileResponse(image_path)
     except Exception:
         raise HTTPException(
             status_code=404,
