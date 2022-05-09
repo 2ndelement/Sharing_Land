@@ -49,34 +49,35 @@ sequenceDiagram
 
 - **小程序**:
 
-   在用户进入小程序时, 可展现一个登录界面, 点击登录按钮调用 **login函数**,
+  在用户进入小程序时, 可展现一个登录界面, 点击登录按钮调用 **login函数**,
 
-   该**login函数**:
+  该**login函数**:
 
-   首先调用 `wx.login()`, 获取到`code`字段, 将`code`
-  字段通过 [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768))请求发送到服务器
+  首先调用 `wx.login()`, 获取到`code`字段, 将`code`
+  字段通过 [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)请求发送到服务器  **服务器的host应存储为一个全局变量以便修改**
 
    返回体中:
 
-   errcode -> 0:    告知用户登录成功, 将取得的`token`存入本地storage, 以待后续业务请求, 跳转到主界面
+   errcode -> 0:    告知用户登录成功, 将取得的**`token`**存入本地wx storage, 以待后续业务请求。然后跳转到主界面
 
    errcode -> !0:   告知用户登录错误, 显示错误原因
 
-- **服务器**:
+  **!!!记住此后的请求 !未! 标明无需Token的 !都! 要在请求头中加Token鉴权!!! 字段就命名为 'Token' 一旦服务器返回HTTP状态码`401`就需要求用户重新登录**
 
   
+
+- **服务器**:
+
   在接受到上述接口传来的js_code后,向微信后台发起请求[auth.code2Session](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html)
   , 将数据处理为上述接口所需数据形式返回。
-
-   其中`errcode`, `errmsg`继承微信后台获取到的数据, `token`由jwt工具生成, 有效时间暂定为 7 day。
-
-   同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
-
-   存在:    更新`nickname`,`avatarurl`
-
-   不存在:新插入一行用户数据
-
-***!!!记住此后的请求都要在请求头中加Token鉴权!!! 字段就命名为 'Token'***
+  
+ 返回的数据中`errcode`, `errmsg`继承微信后台获取到的数据, **`token`**由jwt工具生成, 有效时间暂定为 7 day。
+  
+ 同时, 判断获取到的`openid`(作为用户ID)是否已经在数据库存在,
+  
+ 存在:    更新`nickname`,`avatarurl`
+  
+ 不存在:新插入一行用户数据
 
 
 
@@ -129,21 +130,22 @@ sequenceDiagram
 
     - **填写土地描述**: 填写文本信息的土地详情描述
     - **选择描述图片**: 选择图片信息
-    - **选择地理位置**: 调用地图接口选择地理位置获取经纬度
+    - **选择地理位置**: 调用地图接口选择地理位置获取经纬度,**可以去查一下腾讯地图API的调用使用**
 
   将土地描述存入`content`,经纬度按 字符串`'$经度;$维度'`的格式存入`position`
 
   点击提交按钮后
 
-   首先
-  将图片通过 [/api/upload/image](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)上传到服务器
-
-   然后 将其他信息通过 [/api/post/land]() 上传到服务器
+   首先 将图片通过 [/api/image/upload](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)上传到服务器,服务器会返回每张图片在服务器调用的url
+  
+   然后 将其他信息通过 [/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768) 上传到服务器
+  
+  **!注意! 你需要把多个url处理为`url1;url2;url3`的字符串形式 ,把地理位置处理成`lng;lat`的形式**
+  
+  
 
 
 - **服务器**:
-
-
 
 
 
@@ -153,7 +155,7 @@ sequenceDiagram
 
 ​    [/api/upload/image](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)
 
-
+​	[/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768)
 
 
 
