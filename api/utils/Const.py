@@ -1,3 +1,6 @@
+"""
+用户类接口路由
+"""
 from datetime import timedelta
 
 from pydantic import BaseModel
@@ -8,6 +11,9 @@ import os
 
 
 class Const:
+    """
+    此类存储常量
+    """
     APPID = 'wxdad1820020c9cc36'
     APPSECRET = '3afd0028787d74fc40982d8584e741e7'
     HOST = '127.0.0.1'

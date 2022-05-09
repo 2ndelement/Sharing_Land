@@ -1,3 +1,6 @@
+"""
+图片类接口路由
+"""
 import os
 import re
 from datetime import datetime
@@ -15,6 +18,12 @@ upload_route = APIRouter(
 
 @upload_route.post('/upload')
 async def image_upload(file: UploadFile = File(...), openid: str = Depends(token_is_valid)):
+    """
+    上传图片
+    :param file: 上传的图片文件
+    :param openid: 此处无用仅来验证token
+    :return:
+    """
     filename = file.filename
     temp = filename.split('.')
     if temp[-1] not in ['png', 'jpg']:
@@ -35,6 +44,11 @@ async def image_upload(file: UploadFile = File(...), openid: str = Depends(token
 
 @upload_route.get('/download/{image_name}')
 async def image_download(image_name: str = Path(...)):
+    """
+    下载图片
+    :param image_name:待下载的图片名称
+    :return: StreamingResponse 文件流
+    """
     try:
         image_path = os.path.join(Const.image_save_dir, image_name)
         image = open(image_path, mode='rb')

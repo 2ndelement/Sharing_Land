@@ -10,12 +10,18 @@ user_router = APIRouter(
 
 
 class LoginPostBody(BaseModel):
+    """
+    登录请求体模型
+    """
     js_code: str
     avatar_url: HttpUrl
     nickname: str
 
 
 class VerifyBody(BaseModel):
+    """
+    登录验证模型
+    """
     js_code: str
     appid: str = Const.APPID
     secret: str = Const.APPSECRET
@@ -24,6 +30,11 @@ class VerifyBody(BaseModel):
 
 @user_router.post('/login')
 async def user_login(login_body: LoginPostBody):
+    """
+    用户登录接口处理
+    :param login_body:登录体
+    :return:
+    """
     vb = VerifyBody(js_code=login_body.js_code)
     response = requests.get(url=Const.verify_url, params=vb.dict())
     content: dict = json.loads(response.content.decode())
