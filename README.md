@@ -133,7 +133,7 @@ sequenceDiagram
     - **选择描述图片**: 选择图片信息
     - **选择地理位置**: 调用地图接口选择地理位置获取经纬度,**可以去查一下腾讯地图API的调用使用**
 
-  将土地描述存入`content`,经纬度按 字符串`'$经度;$维度'`的格式存入`position`
+  将土地描述存入`description`,经纬度`[$经度,$维度]`的格式存入`position`
 
   点击提交按钮后
 
@@ -141,7 +141,7 @@ sequenceDiagram
   
    然后 将其他信息通过 [/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768) 上传到服务器
   
-  **!注意! 你需要把多个url处理为[url1,url2,url3]列表形式,把地理位置处理成[lng-float,lat-float]的形式**
+  **!注意! 你需要把多个url处理为[url1,url2,url3]列表形式,把地理位置处理成[lng-float,lat-float]的形式,URL必须满足形如http://xxxxxx的形式 所有数据必须以指定格式请求,否则服务器将返回`422`错误码**
   
   
 
@@ -216,3 +216,14 @@ create table Comment
     foreign key (lno) references Land (lno)
 )
 ```
+
+
+
+## 6.测试数据
+
+token:
+
+```jwt_token
+eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvR1JMMTRvQ0dpamZsb1BmaXdBRl9DQmlXRnJRIiwiZXhwIjoxNjUyNzUwNTgyfQ.URMmx_YylADa7nFN_ofA407vVj6hWBTe4JiStvHDgOk
+```
+
