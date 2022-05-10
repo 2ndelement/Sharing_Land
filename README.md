@@ -56,9 +56,9 @@ sequenceDiagram
   首先调用 [wx.login()](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html?msclkid=47d4cda8cf7811ec8613b4d8a85d250b), 获取到`code`字段, 将`code`
   字段通过 [/api/user/login](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48000826&shareCode=36iWep&shareToken=$2y$10$UrwSpCNcoPLs9YAUDSpDae4HoEBmekVFlA~2FKmLaQ~2FXF.KJjpHZ56C&shareID=375768)请求发送到服务器  **服务器的host应存储为一个全局变量以便修改**
 
-   返回体中:
+   返回体中有errcode,(token)或(errmsg)
 
-   errcode -> 0:    告知用户登录成功, 将取得的**`token`**存入本地storage, 以待后续业务请求。然后跳转到主界面
+   errcode -> 0:    告知用户登录成功, 将取得的**token**存入本地storage, 以待后续业务请求。然后跳转到主界面
 
   > 附:	[wx.setStorage(Object object) | 微信开放文档 (qq.com)](https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorage.html)
 
@@ -139,7 +139,7 @@ sequenceDiagram
 
    首先 将图片通过 [/api/image/upload](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)上传到服务器,服务器会返回每张图片在服务器调用的url
   
-   然后 将其他信息通过 [/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768) 上传到服务器
+   然后 将其他信息通过 [/api/land/create](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768) 上传到服务器
   
   **!注意! 你需要把多个url处理为[url1,url2,url3]列表形式,把地理位置处理成[lng-float,lat-float]的形式,URL必须满足形如http://xxxxxx的形式 所有数据必须以指定格式请求,否则服务器将返回`422`错误码**
   
@@ -148,6 +148,17 @@ sequenceDiagram
 
 - **服务器**:
 
+  本文档写到这里时已经该环节over了,略...
+
+
+
+现在提供用户**查询自己发布的土地**的功能:
+```mermaid
+sequenceDiagram
+小程序->>服务器:发起请求调用接口/api/land/query
+服务器->>服务器:根据请求内容更改信息
+服务器->>小程序:返回更改状态
+```
 
 
 ## 4.API汇总
@@ -156,7 +167,7 @@ sequenceDiagram
 
 ​    [/api/upload/image](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48001523&shareCode=36iWep&shareToken=$2y$10$gmvhiBI~2FqTO49lheilQUkevbipzQ~2Fvc8u3A4Z4eeyjCjIF2u4UOXq&shareID=375768)
 
-​	[/api/user/postland](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768)
+​	[/api/land/create](https://www.eolink.com/share/project/api/detail?groupID=-1&apiID=48007742&shareCode=36iWep&shareToken=$2y$10$srUfLT5.3jU6OmOztnHZQ.jYU7Ra6xQqkmEv1LxWCGhScstSIp8NG&shareID=375768)
 
 
 
