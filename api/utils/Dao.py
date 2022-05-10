@@ -72,23 +72,45 @@ class Dao:
 
     @classmethod
     def get_uid_by_openid(cls, openid: str) -> int:
+        """
+        通过openid查询uid,不存在则返回0
+        :param openid:
+        :return:
+        """
         try:
             cur = cls._cursor
             cur.execute(f"select uid "
                         f"from User "
                         f"where openid= '{openid}'")
             if cur.rowcount:
-                return 0
-            else:
                 return cur.fetchone()[0]
+            else:
+                return 0
         except Exception as e:
             logging.error(e)
             raise e
 
     @classmethod
-    def get_user_land_info(cls, uid: int):
+    def get_user_land_info(cls, uid: int) -> list:
         try:
             cur = cls._cursor
+            # todo: 查询指定用户的发布土地信息,
+            #  构建为[{key1:value,key2:[value1,value2]},{}]类似的形式返回
+            #  例:[{
+            #  'lno':1,
+            #  'description':'喜欢我的地吗',
+            #  'image_urls':[url1,url2],
+            #  'position':[lng,lat]
+            #  'create_time': '2022-05-10 10:10:01'
+            #  },{
+            #  'lno':2,
+            #  'description':'喜欢我的地吗',
+            #  'image_urls':[url1],
+            #  'position':[lng,lat]
+            #  'create_time': '2022-05-10 10:10:02'
+            #  'modify_time': '2022-05-10 10:10:03'
+            #  },
+            #  ]
         except Exception as e:
             logging.error(e)
             raise e

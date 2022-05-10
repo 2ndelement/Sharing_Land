@@ -45,8 +45,11 @@ async def create_land(land_body: LandBody, common: dict = Depends(token_is_valid
 
 @land_router.get('/query')
 async def query_land(uid: Optional[int] = None, common: dict = Depends(token_is_valid)):
-    if uid:
-        result = Dao.get_user_land_info(uid)
-    else:
-        result = Dao.get_user_land_info(common.get('uid'))
-    return result
+    try:
+        if uid:
+            result = Dao.get_user_land_info(uid)
+        else:
+            result = Dao.get_user_land_info(common.get('uid'))
+        return dict(errcode=0, info=result)
+    except Exception:
+        return dict(errcode=500, errmsg='服务器内部故障')
