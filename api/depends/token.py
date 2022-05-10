@@ -9,12 +9,12 @@ async def token_is_valid(token: str = Header(...)):
     :return:
     """
     if Const.debug:
-        return 'debug'
+        return {'openid': 'debug', 'uid': 'debug'}
 
     status, payload = JwtFactory.parse_token(token)
 
     if status:
-        return {'openid': payload.get('openid')}
+        return dict(openid=payload.get('openid'), uid=payload.get('uid'))
     else:
         raise HTTPException(
             status_code=401,

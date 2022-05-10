@@ -39,13 +39,11 @@ class JwtFactory:
         return verify_status, payload_data
 
     @classmethod
-    def generate_token_openid(cls, openid: str) -> str:
+    def generate_token_openid_uid(cls, openid: str, uid: int) -> str:
         """
         通过openid生成token
         :param openid:用户的openid,待取出识别请求操作的用户
         :return:
         """
-        payload = dict(openid=openid, exp=datetime.now() + Const.jwt_exp)
+        payload = dict(openid=openid, uid=uid, exp=datetime.now() + Const.jwt_exp)
         return cls.generate_token(payload)
-
-

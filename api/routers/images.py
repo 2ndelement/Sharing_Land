@@ -17,11 +17,11 @@ upload_router = APIRouter(
 
 
 @upload_router.post('/upload')
-async def image_upload(file: UploadFile = File(...), openid: str = Depends(token_is_valid)):
+async def image_upload(file: UploadFile = File(...), common: dict = Depends(token_is_valid)):
     """
     上传图片
     :param file: 上传的图片文件
-    :param openid: 此处无用仅来验证token
+    :param common: 此处无用仅来验证token,包含openid,uid
     :return:
     """
     filename = file.filename

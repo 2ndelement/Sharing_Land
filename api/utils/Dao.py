@@ -54,7 +54,7 @@ class Dao:
             raise e
 
     @classmethod
-    def user_post_land(cls, openid: str, description: str, position: str, image_urls: str, ):
+    def user_post_land(cls, uid: int, description: str, position: str, image_urls: str, ):
         try:
             cur = cls._cursor
             create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -62,14 +62,33 @@ class Dao:
                 image_urls = f"'{image_urls}'"
             else:
                 image_urls = 'null'
-            cur.execute(f"select uid "
-                        f"from User "
-                        f"where openid = '{openid}'")
-            uid = cur.fetchone()[0]
             cur.execute(
                 f"insert into Land(description, image_urls, uid, position, create_time) "
                 f"values ('{description}',{image_urls},'{uid}','{position}','{create_time}')")
             cls._db.commit()
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+    @classmethod
+    def get_uid_by_openid(cls, openid: str) -> int:
+        try:
+            cur = cls._cursor
+            cur.execute(f"select uid "
+                        f"from User "
+                        f"where openid= '{openid}'")
+            if cur.rowcount:
+                return 0
+            else:
+                return cur.fetchone()[0]
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+    @classmethod
+    def get_user_land_info(cls, uid: int):
+        try:
+            cur = cls._cursor
         except Exception as e:
             logging.error(e)
             raise e
