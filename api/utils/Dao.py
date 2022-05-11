@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from typing import Optional
 
 import pymysql
 from .Const import Const
@@ -54,7 +55,7 @@ class Dao:
             raise e
 
     @classmethod
-    def user_post_land(cls, uid: int, description: str, position: str, image_urls: str, ):
+    def user_post_land(cls, uid: int, description: str, position: str, image_urls: Optional[str] = None, ):
         try:
             cur = cls._cursor
             create_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -111,6 +112,24 @@ class Dao:
             #  'modify_time': '2022-05-10 10:10:03'
             #  },
             #  ]
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+    @classmethod
+    def modify_land_info(cls, lno: int, uid: int, **kargs):
+        sql = "update Land set "
+        for k, v in kargs.items():
+            if v is not None:
+                sql += f"{k} = '{v}',"
+        sql = sql.strip(',')
+        sql += f"where lno = {lno} and uid = {uid}"
+        cur = cls._cursor
+        try:
+            rows = cur.execute(sql)
+            if rows == 0:
+                raise PermissionError
+            cls._db.commit()
         except Exception as e:
             logging.error(e)
             raise e

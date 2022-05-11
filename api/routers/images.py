@@ -37,6 +37,7 @@ async def image_upload(file: UploadFile = File(...), common: dict = Depends(toke
                 f.write(res)
                 f.close()
             return {'errcode:': 0,
+                    'errmsg': '',
                     'url': f'http://{Const.HOST}:{Const.PORT}/api/image/download/{filename}'}
         except Exception:
             return {'errcode': 400, 'errmsg': '未知错误'}

@@ -42,6 +42,7 @@ class JwtFactory:
     def generate_token_openid_uid(cls, openid: str, uid: int) -> str:
         """
         通过openid生成token
+        :param uid:
         :param openid:用户的openid,待取出识别请求操作的用户
         :return:
         """

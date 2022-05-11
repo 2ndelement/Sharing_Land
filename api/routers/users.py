@@ -46,6 +46,6 @@ async def user_login(login_body: LoginPostBody):
             openid = content.get('openid')
             Dao.update_user(openid, login_body.avatar_url, login_body.nickname)
             uid = Dao.get_uid_by_openid(openid)
-            return {'errcode': 0, 'token': JwtFactory.generate_token_openid_uid(openid, uid)}
+            return {'errcode': 0, 'token': JwtFactory.generate_token_openid_uid(openid, uid), 'errmsg': ''}
         except Exception as e:
             return {'errcode': 500, 'errmsg': '服务器内部错误'}
