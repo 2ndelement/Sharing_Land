@@ -180,12 +180,15 @@ sequenceDiagram
 |     |        |          |            |
 
 ```sql
-CREATE TABLE User
+create table User
 (
-    uid        INT AUTO_INCREMENT PRIMARY KEY COMMENT '序号',
-    openid     VARCHAR(128) NOT NULL UNIQUE COMMENT '小程序开放ID',
-    nickname   VARCHAR(128) COMMENT '微信昵称',
-    avatar_url VARCHAR(512) COMMENT '微信头像链接'
+    uid        int auto_increment comment '序号'
+        primary key,
+    openid     varchar(128) not null comment '小程序开放ID',
+    nickname   varchar(128) null comment '微信昵称',
+    avatar_url varchar(512) null comment '微信头像链接',
+    constraint openid
+        unique (openid)
 );
 ```
 
@@ -198,14 +201,23 @@ CREATE TABLE User
 ```mysql
 create table Land
 (
-    lno         int auto_increment primary key comment '序号',
-    description varchar(1024) not null comment '描述',
-    image_urls  varchar(1024) comment '描述图标链接 以;作为分割符',
-    uid         int comment '发布的用户序号',
-    position    varchar(64)  not null comment '经纬度 例子 127.2131231;67.1312332',
-    create_time datetime     not null comment '创建时间',
-    modify_time datetime comment '修改时间',
-    foreign key (uid) references User (uid)
+    lno         int auto_increment comment '序号'
+        primary key,
+    description varchar(1024)        not null comment '描述',
+    image_urls  varchar(1024)        null comment '描述图标链接 以;作为分割符',
+    uid         int                  null comment '发布的用户序号',
+    position    varchar(64)          not null comment '经纬度 例子 127.2131231;67.1312332',
+    create_time datetime             not null comment '创建时间',
+    modify_time datetime             null comment '修改时间',
+    close       tinyint(1) default 0 not null comment '是否被关闭',
+    constraint Land_ibfk_1
+        foreign key (uid) references User (uid)
+);
+
+create index uid
+    on Land (uid);
+
+
 )
 ```
 
@@ -218,13 +230,25 @@ create table Land
 ```sql
 create table Comment
 (
-    cno       int unsigned auto_increment primary key comment '序号',
+    cno       int unsigned auto_increment comment '序号'
+        primary key,
     uid       int          not null comment '留言的用户序号',
     content   varchar(255) not null comment '留言内容',
     lno       int          not null comment '留言的土地序号',
     post_time datetime     not null comment '留言时间',
-    foreign key (uid) references User (uid),
-    foreign key (lno) references Land (lno)
+    constraint Comment_ibfk_1
+        foreign key (uid) references User (uid),
+    constraint Comment_ibfk_2
+        foreign key (lno) references Land (lno)
+);
+
+create index lno
+    on Comment (lno);
+
+create index uid
+    on Comment (uid);
+
+
 )
 ```
 

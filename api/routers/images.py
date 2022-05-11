@@ -9,7 +9,7 @@ from fastapi import APIRouter, UploadFile, File, Depends, Path, HTTPException
 from fastapi.responses import FileResponse
 
 from api.depends import token_is_valid
-from api.utils import Const
+from api.utils import Const, ResponseDict, ErrorCode
 
 upload_router = APIRouter(
     prefix='/api/image'
@@ -36,11 +36,10 @@ async def image_upload(file: UploadFile = File(...), common: dict = Depends(toke
             with open(save_path, 'wb') as f:
                 f.write(res)
                 f.close()
-            return {'errcode:': 0,
-                    'errmsg': '',
-                    'url': f'http://{Const.HOST}:{Const.PORT}/api/image/download/{filename}'}
+            return ResponseDict(ErrorCode.success,
+                                url=f'http://{Const.HOST}:{Const.PORT}/api/image/download/{filename}')
         except Exception:
-            return {'errcode': 400, 'errmsg': '未知错误'}
+            return ResponseDict(ErrorCode.internal_errors)
 
 
 @upload_router.get('/download/{image_name}')

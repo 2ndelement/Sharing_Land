@@ -4,9 +4,11 @@
 from .users import user_router
 from .images import upload_router
 from .lands import land_router
+from .comment import comment_router
 
 routers = [
     user_router,
     upload_router,
-    land_router
+    land_router,
+    comment_router
 ]
